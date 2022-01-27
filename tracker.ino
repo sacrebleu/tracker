@@ -1,6 +1,7 @@
 /* 
  *  reads input from an analog pin, and on v> v_crit it sets D13 to HIGH for 3 seconds.
  */
+// set debug to 0 to stop sysouts
 #define DEBUG 1
 
 // state machine variables
@@ -9,18 +10,20 @@
 #define STATE_REV 2
 #define STATE_FWD 1
 
+// LED output pins begin
 #define LED_REVERSE 6      // LED that lights when the drive is reversing
 #define LED_TRACK 7    // LED that lights when the drive is tracking
 #define LED_FORWARD 8  // LED that lights when the drive is fast-forwarding
+// LED output pins end
+
+// motor output pins
+
+// motor output pins end
 
 // inputs
 #define BTN_REVERSE 2
 #define BTN_FORWARD 3
 #define BTN_TRACKING 9
-//int btn_rev = 2;
-//int btn_fwd = 3;
-//int btn_trk = 9;
-
 
 /* class model for an LED */
 class Led {
@@ -30,14 +33,11 @@ class Led {
   public:
     Led(byte pin) {
       this->pin = pin;
-      init();
-    }
-    void init() {
       pinMode(pin, OUTPUT);
       off();
     }
-    
-    // set the pin high
+     
+    // set the mapped pin HIGH - turning on any correctly-connected component, in this case hopefully an LED
     void on() {
       digitalWrite(pin, HIGH);
     }
