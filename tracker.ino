@@ -1,6 +1,3 @@
-/* 
- *  reads input from an analog pin, and on v> v_crit it sets D13 to HIGH for 3 seconds.
- */
 // comment out this line to stop debugs
 #define DEBUG
 
@@ -24,7 +21,6 @@
 
 // MOTOR CONFIG
 #define EARTH_ROTATION 0.0041667 // approximation of 1/240
-#define DEGREES_PER_STEP 0.018 // motor step
 #define THRESHOLD 3000 // ms window length
 
 // motor output pins
@@ -62,13 +58,11 @@ class Led {
     }
 };
 
+// Abstract superclass to resolve circular dependency that otherwise is created
 class AbstractMotor {
     
   public:
-    // construct a motor representation for `dps` degrees per step
-    AbstractMotor() {
-      
-    } 
+    AbstractMotor() { } 
 
     virtual void drive_motor(int steps) { }
 };
@@ -287,10 +281,6 @@ void setup() {
   Serial.begin(9600);
   #endif
   
-//  pinMode(led_rev, OUTPUT);
-//  pinMode(led_trk, OUTPUT);
-//  pinMode(led_fwd, OUTPUT);
-
   sys = ControlSystem();
   motor = Motor();
   sys.set_motor(&motor);
@@ -310,19 +300,11 @@ void setup() {
 
 
 void loop(){
-  // this should be an ISR
-//  toggle_trk();
   sys.tick();
 
   #ifdef DEBUG
     sys.debug();
-//  }
   #endif
-
-  // display button states
-//  show_state(state);
-//  drive_stepper(); // will pass control system here too
-  // rotate the stepper motor in accordance with the system state
 
   // despam
   delay(100);
